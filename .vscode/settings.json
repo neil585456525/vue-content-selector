@@ -1,0 +1,10 @@
+{
+  "liveSassCompile.settings.autoprefix": [],
+  "liveSassCompile.settings.formats": [
+    {
+      "format": "compressed",
+      "extensionName": ".min.hackcss",
+      "savePath": "/src/assets"
+    }
+  ]
+}

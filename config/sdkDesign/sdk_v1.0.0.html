@@ -1,0 +1,26 @@
+<script>
+  (function (d, o, t, ta, dt, ot) {
+    d['DottaObject'] = dt, d[dt] = d[dt] || function () {
+      (d[dt].q = d[dt].q || []).push(arguments);
+    };
+    var s = o.createElement(t);
+    s.type = 'text/javascript';
+    s.async = true;
+    s.src = ta + '?dottaId=' + ot;
+    var x = o.getElementsByTagName(t)[0];
+    x.parentNode.insertBefore(s, x);
+  }(window, document, 'script', 'http://localhost:3000/sdk/main.js', 'dotta', 'e3e44f2e2a3934537ff9d9aecd056b50f53192b2'));
+</script>
+
+<script>
+  // d['DottaObject'] = dt，可以用來判斷頁面是否有成功跑 dotta sdk
+</script>
+
+<script>
+  (function (i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+      (i[r].q = i[r].q || []).push(arguments)
+    }, i[r].l = 1 * new Date(); a = s.createElement(o),
+      m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+  })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+</script>

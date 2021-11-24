@@ -1,0 +1,26 @@
+@mixin bg($sz: cover, $po: center){
+  background-size: $sz;
+  background-position-x: $po;
+  background-position-y: $po;
+  background-repeat: no-repeat;
+}
+
+@mixin flex($ai: center, $jc: center){
+  display: flex;
+  align-items: $ai;
+  justify-content: $jc;
+}
+
+@mixin max($maxW: 575){
+  // 575, 767, 991, 1199
+  @media (max-width: #{$maxW}px){
+    @content;
+  }
+}
+
+@mixin min($minW: 576){
+  // 576, 768, 992, 1200
+  @media (min-width: $minW + 'px'){
+    @content;
+  }
+}

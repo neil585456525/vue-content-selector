@@ -1,0 +1,37 @@
+{
+  "name": "sdk",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development webpack serve",
+    "build": "cross-env NODE_ENV=production webpack"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.35",
+    "@fortawesome/free-solid-svg-icons": "^5.15.3",
+    "@fortawesome/vue-fontawesome": "^3.0.0-4",
+    "@vueuse/core": "^5.0.3",
+    "css-selector-generator": "^3.0.1",
+    "pinia": "2.0.4",
+    "vue": "3.2.20",
+    "vue-shadow-dom": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.6",
+    "clean-webpack-plugin": "^4.0.0-alpha.0",
+    "cross-env": "^7.0.3",
+    "css-loader": "^6.5.0",
+    "esbuild-loader": "^2.16.0",
+    "file-loader": "^6.2.0",
+    "rimraf": "^3.0.2",
+    "sass": "^1.43.4",
+    "sass-loader": "^12.3.0",
+    "style-loader": "^3.3.1",
+    "typescript": "4.5",
+    "vue-loader": "16.8.3",
+    "webpack": "5.64.2",
+    "webpack-bundle-analyzer": "^4.4.2",
+    "webpack-cli": "^4.7.2",
+    "webpack-dev-server": "^3.11.2",
+    "webpackbar": "^5.0.0-3"
+  }
+}
