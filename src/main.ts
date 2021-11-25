@@ -5,7 +5,7 @@ import { createDivWithId, initHelper } from './helper/utils';
 import { FontAwesomeIcon } from './fontIcon';
 import EditApp from './EditApp.vue';
 
-export async function editInit(): Promise<void> {
+async function init(): Promise<void> {
   try {
     initHelper(async () => {
       const appDom = createDivWithId('dotta_app');
@@ -24,4 +24,7 @@ export async function editInit(): Promise<void> {
   }
 }
 
-editInit();
+//@ts-ignore
+window.vcs = {
+  init,
+}

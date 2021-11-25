@@ -21,7 +21,7 @@
               <font-awesome-icon icon="cog" />
             </button>
           </div>
-          <div class="mt-1 btn selector">{{ blockConfig.selector || 'selector' }}</div>
+          <div v-if="blockConfig.selector" class="mt-1 btn selector">{{ blockConfig.selector }}</div>
           <span style="border-left: 1px white solid;"></span>
           <BlockSetting v-show="openSelectSetting" />
           <button class="btn save-btn mt-1" @click="saveDataToRepo" :disabled="isOnSaving">

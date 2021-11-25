@@ -90,7 +90,8 @@ function endDrag() {
     position: absolute;
     left: 0;
     top: 0;
-    padding: 20px 10px 10px 15px;
+    padding: 5px 5px 5px 10px;
+    margin: 10px;
     z-index: 1;
     svg {
       width: 10px;
