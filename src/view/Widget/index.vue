@@ -12,11 +12,11 @@
           <font-awesome-icon icon="chevron-right" />
         </button>
         <!-- cancel selecting -->
-        <button v-else @click="stopSelectorHandler" class="btn btn-primary stop-sel-btn">cancel</button>
+        <button v-else @click="cancelChoose" class="btn btn-primary stop-sel-btn">cancel</button>
         <section class="option mt-4">
           <!-- <div class="mt-1 mb-1 infor-text" v-if="isSelectElFalse">invalid position</div> -->
           <div class="btn-group">
-            <button class="btn btn-primary btn-main" @click="chooseElement">start select</button>
+            <button class="btn btn-primary btn-main" @click="startChoose">start select</button>
             <button class="btn btn-primary" @click="openSelectSetting = !openSelectSetting">
               <font-awesome-icon icon="cog" />
             </button>
@@ -40,7 +40,7 @@ import { storeToRefs } from 'pinia';
 import getCssSelector from 'css-selector-generator';
 import { useMainStore } from '@/store';
 import PopMessage from '@/components/PopMessage.vue';
-import { ContentSelector } from '../ContentSelector';
+import { positionSelector } from '../PositionSelector';
 import DragContainer from './DragContainer.vue';
 import BlockSetting from './BlockSetting/index.vue';
 
@@ -55,31 +55,32 @@ const popMsg = reactive({
 const isWidgetCollapse = ref(false);
 const openSelectSetting = ref(false);
 
-const stopSelectorHandler = ref<((e: MouseEvent) => void) | undefined>();
-
-function chooseElement() {
-  const tmpSaveSelector = blockConfig.value.selector;
-  // 成功選擇回呼
-  function onSelectedCb(el: HTMLElement) {
-    isPreviewChoosing.value = false;
-    isWidgetCollapse.value = false;
-    const newSelector = getCssSelector(el, { blacklist: [/src/] });
-    if (newSelector) {
-      blockConfig.value.selector = newSelector;
-    }
+positionSelector.setOnSelectedHandler((el: HTMLElement) => {
+  isPreviewChoosing.value = false;
+  isWidgetCollapse.value = false;
+  const newSelector = getCssSelector(el, { blacklist: [/src/] });
+  if (newSelector) {
+    blockConfig.value.selector = newSelector;
   }
-  // 初始化
+})
+
+let tmpSaveSelector: string = '';
+
+function startChoose() {
+  tmpSaveSelector = blockConfig.value.selector;
   isPreviewChoosing.value = true;
   isWidgetCollapse.value = true;
   blockConfig.value.selector = '';
-  const { stopSelector } = ContentSelector(onSelectedCb, blockConfig.value.insertPosition);
-  // 停止
-  stopSelectorHandler.value = () => {
-    isPreviewChoosing.value = false;
-    isWidgetCollapse.value = false;
-    blockConfig.value.selector = tmpSaveSelector;
-    stopSelector();
-  };
+  positionSelector
+    .setInsertPosition(blockConfig.value.insertPosition)
+    .startSelector();
+}
+
+function cancelChoose() {
+  isPreviewChoosing.value = false;
+  isWidgetCollapse.value = false;
+  positionSelector.stopSelector();
+  blockConfig.value.selector = tmpSaveSelector;
 }
 
 const isOnSaving = ref(false);

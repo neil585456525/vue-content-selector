@@ -36,6 +36,7 @@ function onSelected(editSectionEl: HTMLDivElement) {
   isSelectElFalse.value = false;
   editSectionEl.scrollIntoView({
     behavior: 'smooth',
+    block: 'center'
   });
   contentSectionDom.value = editSectionEl;
 }
