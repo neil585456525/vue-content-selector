@@ -20,3 +20,8 @@
 .fa-spinner {
   animation: spinner 1.5s linear infinite;
 }
+
+hr{
+  border: 0;
+  border-top: 2px solid $template-p;
+}

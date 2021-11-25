@@ -8,11 +8,9 @@
     }"
     :style="{ left: xCss, top: yCss }"
   >
-    <!-- 拖曳按鈕 -->
     <span class="drag-btn" @mousedown="startDrag" @mouseup="endDrag">
       <font-awesome-icon icon="grip-vertical" />
     </span>
-    <!-- <it-icon name="drag_indicator" class="drag-btn" @mousedown="startDrag" @mouseup="endDrag" /> -->
     <slot></slot>
   </section>
 </template>
@@ -23,9 +21,9 @@ import { baseZIndex } from '../config';
 
 const dragWrapperRef = ref<HTMLElement | null>(null);
 
-// 距離頁面左
+// page left
 const x = ref(0);
-// 距離頁面上
+// page top
 const y = ref(50);
 const views = {
   isAlignRight: false,
@@ -46,7 +44,7 @@ function moveEl(event: MouseEvent) {
 
 function startDrag() {
   document.body.addEventListener('mousemove', moveEl);
-  // 確認元件寬度，避免游標對不到
+  // ensure the element width and set interact scope
   if (dragWrapperRef.value) {
     const { width } = dragWrapperRef.value.getBoundingClientRect();
     ElWidth = width;
@@ -57,13 +55,13 @@ function endDrag() {
   document.body.removeEventListener('mousemove', moveEl);
   const { width: bodyWidth } = document.body.getBoundingClientRect();
   if (x.value + ElWidth / 2 < bodyWidth / 2) {
-    // 黏到左邊
+    // stick to left
     x.value = 0;
     views.isAlignRight = false;
     views.alignRightEnd = false;
     return;
   }
-  // 黏到右邊
+  // stick to right
   views.isAlignRight = true;
   views.alignRightEnd = true;
   x.value = bodyWidth;

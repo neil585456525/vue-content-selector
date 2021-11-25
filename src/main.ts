@@ -5,9 +5,6 @@ import { createDivWithId, initHelper } from './helper/utils';
 import { FontAwesomeIcon } from './fontIcon';
 import EditApp from './EditApp.vue';
 
-/**
- * 編輯模式主要初始化
- */
 export async function editInit(): Promise<void> {
   try {
     initHelper(async () => {

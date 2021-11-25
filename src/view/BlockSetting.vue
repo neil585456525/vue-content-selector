@@ -7,7 +7,10 @@
           <span>
             <font-awesome-icon icon="arrow-up" />
           </span>
-          <p>向上插入</p>
+          <p>
+            insert
+            <br />before
+          </p>
         </label>
       </div>
       <div class="btn-item" :class="{ active: blockConfig.insertPosition === 'bottom' }">
@@ -16,25 +19,31 @@
           <span>
             <font-awesome-icon icon="arrow-down" />
           </span>
-          <p>向下插入</p>
+          <p>
+            insert
+            <br />after
+          </p>
         </label>
       </div>
     </section>
     <hr />
-    <div class="mt-1 mb-1" style="text-align: center;">電腦版版面設定</div>
+    <div class="mt-1 mb-1" style="text-align: center;">computer layout setting</div>
     <section class="mt-2">
-      <div>區塊寬度</div>
-      <input
-        type="range"
-        class="mb-3 mt-1"
-        v-model="store.blockConfig.width"
-        numbers
-        step="1"
-        min="10"
-        max="100"
-      />
+      <label>
+        block width
+        <input
+          type="range"
+          class="mb-3 mt-1"
+          v-model="store.blockConfig.width"
+          numbers
+          step="1"
+          min="10"
+          max="100"
+        />
+        {{ blockConfig.width }}%
+      </label>
     </section>
-    <select style="width: 100%;" v-model="store.blockConfig.align">
+    <select class="btn" style="width: 100%;" v-model="store.blockConfig.align">
       <option v-for=" item in alignOptions" :key="item.name" :value="item.value">{{ item.name }}</option>
     </select>
   </main>
@@ -49,7 +58,7 @@ type SelectModel = { name: string; value: 'start' | 'center' | 'end'; }
 const store = useMainStore();
 const { blockConfig } = storeToRefs(store);
 
-const alignOptions: SelectModel[] = [{ name: '置左', value: 'start' }, { name: '置中', value: 'center' }, { name: '置右', value: 'end' }];
+const alignOptions: SelectModel[] = [{ name: 'left', value: 'start' }, { name: 'center', value: 'center' }, { name: 'right', value: 'end' }];
 </script>
 
 <style lang="scss" scoped>

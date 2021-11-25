@@ -7,7 +7,7 @@
       @selectFailed="onSelectFailed"
     >
       <template #noContent>
-        <div :style="noContentStyle">內容區塊位置</div>
+        <div :style="noContentStyle">content block</div>
       </template>
     </DynamicContent>
   </section>
@@ -24,7 +24,7 @@ const contentSectionDom = ref<HTMLElement | null>(null);
 const { blockConfig, isOnFindElLoading, isSelectElFalse } = storeToRefs(useMainStore());
 
 function onSelecting() {
-  // 把舊的刪掉
+  // remove old dom first
   if (contentSectionDom.value) {
     contentSectionDom.value.remove();
   }
@@ -43,7 +43,7 @@ function onSelected(editSectionEl: HTMLDivElement) {
 function onSelectFailed() {
   isOnFindElLoading.value = false;
   isSelectElFalse.value = true;
-  alert('選擇區塊載入過久或找不到區塊，請選擇其他位置');
+  alert('onSelectFailed');
 }
 
 const noContentStyle: HtmlHTMLAttributes['style'] = {

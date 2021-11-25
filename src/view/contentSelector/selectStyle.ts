@@ -1,4 +1,4 @@
-// 預覽區塊
+// preview block when selecting position
 export const previewElClassName = 'dotta__preview-el';
 const previewElStyle = /* css */ `
 .${previewElClassName} {
@@ -9,7 +9,7 @@ const previewElStyle = /* css */ `
 }
 `;
 
-// 選取時元素變化的樣式
+// el style when hovered
 export const selectedClassName = 'dotta__selected';
 const selectedStyle = /* css */ `
 .${selectedClassName} {

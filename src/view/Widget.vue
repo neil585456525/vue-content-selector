@@ -2,7 +2,7 @@
   <section class="widget" ref="editWidgetRef">
     <DragContainer>
       <div class="toolEl" :class="{ hide: isWidgetCollapse }">
-        <!-- 摺疊按鈕 -->
+        <!-- fold btn -->
         <button
           class="btn collapse-btn"
           :class="{ active: isWidgetCollapse }"
@@ -11,24 +11,21 @@
         >
           <font-awesome-icon icon="chevron-right" />
         </button>
-        <!-- 取消選擇按鈕 -->
-        <button v-else @click="stopSelectorHandler" class="btn btn-primary stop-sel-btn">取消</button>
+        <!-- cancel selecting -->
+        <button v-else @click="stopSelectorHandler" class="btn btn-primary stop-sel-btn">cancel</button>
         <section class="option mt-4">
-          <div class="mt-1 mb-1 infor-text" v-if="isSelectElFalse">無效區塊位置</div>
+          <!-- <div class="mt-1 mb-1 infor-text" v-if="isSelectElFalse">invalid position</div> -->
           <div class="btn-group">
-            <!-- 開始選擇按鈕 -->
-            <button class="btn btn-primary btn-main" @click="chooseElement">選取區塊</button>
-            <!-- 設定選取按鈕 -->
+            <button class="btn btn-primary btn-main" @click="chooseElement">start select</button>
             <button class="btn btn-primary" @click="openSelectSetting = !openSelectSetting">
               <font-awesome-icon icon="cog" />
             </button>
           </div>
-          <span>{{ blockConfig.selector }}</span>
-          <!-- 白線 -->
+          <div class="mt-1 btn selector">{{ blockConfig.selector || 'selector' }}</div>
           <span style="border-left: 1px white solid;"></span>
           <BlockSetting v-show="openSelectSetting" />
           <button class="btn save-btn mt-1" @click="saveDataToRepo" :disabled="isOnSaving">
-            <font-awesome-icon icon="spinner" v-if="isOnSaving" />儲存更變
+            <font-awesome-icon icon="spinner" v-if="isOnSaving" />saving
           </button>
         </section>
         <PopMessage :msg="popMsg.msg" :show="popMsg.show" @reset="popMsg.show = false" />
@@ -111,7 +108,7 @@ async function saveDataToRepo() {
     transition: 0.5s;
     box-shadow: 1px 2px 6px rgba(#000, 0.3);
     .option {
-      min-width: 150px;
+      min-width: 170px;
       padding: 15px 10px;
     }
     &.hide {
@@ -132,6 +129,13 @@ async function saveDataToRepo() {
     max-height: 150px;
     overflow: scroll;
     width: 120px;
+  }
+
+  .selector {
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%;
+    text-overflow: ellipsis;
   }
 }
 </style>

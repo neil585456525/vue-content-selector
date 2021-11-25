@@ -17,9 +17,6 @@ export const select = (
 
   initMask();
 
-  /**
-   * 選到元素
-   */
   function selectHandler() {
     if (!hoverEl) return;
     const selectedEl = hoverEl;
@@ -28,7 +25,7 @@ export const select = (
   }
 
   /**
-   * 遮罩層，隔絕滑鼠事件避免直接與元素互動，出現在最前面 elementsFromPoint[0]
+   * mask, prevent cursor event with element -> elementsFromPoint[0]
    */
   function initMask() {
     const style:HtmlHTMLAttributes['style'] = {
@@ -52,33 +49,27 @@ export const select = (
   }
 
   const { pause } = useIntervalFn(() => {
-    // 如果畫面有拉伸，要調整偏差值
+    // if window size change, fix the offset
     const el = document.elementsFromPoint(
       x.value - window.pageXOffset,
       y.value - window.pageYOffset
-    )[1]; // 0 是 mask，但如果在<停止鍵>時，mask 為 1，固可用判定
+    )[1]; // 0 is mask, but when stop mask will be 1
     if (!(el instanceof HTMLElement) || el === privewEl || el === maskEl) {
       return;
     }
-    // 忽略元素
-    // console.log(el);
-    // if (elRoot && elRoot.contains(el)) {
-    //   console.log('in root');
-    //   return;
-    // }
-    // 如果移到新元素就更新
+    // refresh when cursor move to another element
     if (hoverEl !== el) {
-      // reset 舊的
+      // reset old el
       if (hoverEl) {
         hoverEl.classList.remove(selectedClassName);
         if (privewEl) privewEl.remove();
       }
-      // 註冊新的
+      // register new one
       hoverEl = el;
       hoverEl.classList.add(selectedClassName);
       initPrivewEl();
       if (!privewEl) return;
-      // 看加上面還下面
+      
       if (insertPosition === 'bottom') {
         hoverEl.after(privewEl);
         return;
