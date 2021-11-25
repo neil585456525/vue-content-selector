@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue';
+import { ref, computed, reactive } from 'vue';
 import { baseZIndex } from '../config';
 
 const dragWrapperRef = ref<HTMLElement | null>(null);
@@ -25,10 +25,11 @@ const dragWrapperRef = ref<HTMLElement | null>(null);
 const x = ref(0);
 // page top
 const y = ref(50);
-const views = {
+
+const views = reactive({
   isAlignRight: false,
   alignRightEnd: false,
-};
+});
 
 const xCss = computed(() => (x.value !== -1 ? `${x.value.toString()}px` : '100%'));
 const yCss = computed(() => `${y.value.toString()}px`);
@@ -38,8 +39,8 @@ let ElWidth = 180;
 function moveEl(event: MouseEvent) {
   views.alignRightEnd = false;
   const { clientX, clientY } = event;
-  x.value = clientX - 10;
-  y.value = clientY - 10;
+  x.value = clientX - 20;
+  y.value = clientY - 20;
 }
 
 function startDrag() {
@@ -74,7 +75,7 @@ function endDrag() {
   position: fixed;
   z-index: v-bind(baseZIndex);
   &.align-right {
-    &.align-right-end {
+    &-end {
       transform: translateX(-100%);
     }
     .toolEl {

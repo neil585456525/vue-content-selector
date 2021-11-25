@@ -14,8 +14,8 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
 import { storeToRefs } from 'pinia';
-import Widget from '@/view/Widget.vue';
-import ContentProcessor from '@/view/ContentProcessor.vue';
+import Widget from '@/view/Widget/index.vue';
+import ContentProcessor from '@/view/ContentProcessor/index.vue';
 import { useMainStore } from '@/store';
 
 const styleDom = ref(null);

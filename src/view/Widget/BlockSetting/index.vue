@@ -1,46 +1,35 @@
 <template>
   <main>
     <section class="select-setting mt-2">
-      <div class="btn-item" :class="{ active: blockConfig.insertPosition === 'top' }">
-        <label class="radio-wrapper">
-          <input type="radio" value="top" @click="store.blockConfig.insertPosition = 'top'" />
-          <span>
-            <font-awesome-icon icon="arrow-up" />
-          </span>
-          <p>
-            insert
-            <br />before
-          </p>
-        </label>
-      </div>
-      <div class="btn-item" :class="{ active: blockConfig.insertPosition === 'bottom' }">
-        <label class="radio-wrapper">
-          <input type="radio" value="bottom" @click="store.blockConfig.insertPosition = 'bottom'" />
-          <span>
-            <font-awesome-icon icon="arrow-down" />
-          </span>
-          <p>
-            insert
-            <br />after
-          </p>
-        </label>
-      </div>
+      <Radio
+        style="width: 30%;"
+        icon="arrow-up"
+        text="insert before"
+        :is-active="blockConfig.insertPosition === 'top'"
+        @click="store.blockConfig.insertPosition = 'top'"
+      />
+      <Radio
+        style="width: 30%;"
+        icon="arrow-up"
+        text="insert before"
+        :is-active="blockConfig.insertPosition === 'top'"
+        @click="store.blockConfig.insertPosition = 'top'"
+      />
+      <Radio
+        style="width: 30%;"
+        icon="arrow-down"
+        text="insert after"
+        :is-active="blockConfig.insertPosition === 'bottom'"
+        @click="store.blockConfig.insertPosition = 'bottom'"
+      />
     </section>
-    <hr />
-    <div class="mt-1 mb-1" style="text-align: center;">computer layout setting</div>
-    <section class="mt-2">
+    <hr class="mt-2" />
+    <h3 class="mt-1 mb-1" style="text-align: center;">computer layout</h3>
+    <section class="mt-2 slider mb-3">
+      block width
       <label>
-        block width
-        <input
-          type="range"
-          class="mb-3 mt-1"
-          v-model="store.blockConfig.width"
-          numbers
-          step="1"
-          min="10"
-          max="100"
-        />
-        {{ blockConfig.width }}%
+        <input type="range" v-model="store.blockConfig.width" numbers step="1" min="10" max="100" />
+        <span style="font-size: 10px;">{{ blockConfig.width }}%</span>
       </label>
     </section>
     <select class="btn" style="width: 100%;" v-model="store.blockConfig.align">
@@ -50,6 +39,8 @@
 </template>
 
 <script lang="ts" setup>
+import Radio from './Radio.vue'
+
 import { storeToRefs } from 'pinia';
 import { useMainStore } from '@/store';
 
@@ -83,15 +74,6 @@ const alignOptions: SelectModel[] = [{ name: 'left', value: 'start' }, { name: '
     &:hover {
       background-color: #eee;
     }
-    .radio-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      cursor: pointer;
-      input {
-        visibility: hidden;
-      }
-    }
     span {
       position: relative;
       display: flex;
@@ -106,13 +88,6 @@ const alignOptions: SelectModel[] = [{ name: 'left', value: 'start' }, { name: '
         background-color: $template-r;
         bottom: 0;
       }
-    }
-    svg {
-      width: 14px;
-    }
-    p {
-      margin: 0;
-      padding: 0;
     }
   }
 }

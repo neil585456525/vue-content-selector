@@ -40,9 +40,9 @@ import { storeToRefs } from 'pinia';
 import getCssSelector from 'css-selector-generator';
 import { useMainStore } from '@/store';
 import PopMessage from '@/components/PopMessage.vue';
-import { select } from './contentSelector';
-import DragContainer from './editComponents/DragContainer.vue';
-import BlockSetting from './BlockSetting.vue';
+import { ContentSelector } from '../ContentSelector';
+import DragContainer from './DragContainer.vue';
+import BlockSetting from './BlockSetting/index.vue';
 
 const editWidgetRef = ref<HTMLElement | null>(null);
 
@@ -72,7 +72,7 @@ function chooseElement() {
   isPreviewChoosing.value = true;
   isWidgetCollapse.value = true;
   blockConfig.value.selector = '';
-  const { stopSelector } = select(onSelectedCb, blockConfig.value.insertPosition);
+  const { stopSelector } = ContentSelector(onSelectedCb, blockConfig.value.insertPosition);
   // 停止
   stopSelectorHandler.value = () => {
     isPreviewChoosing.value = false;
@@ -104,7 +104,9 @@ async function saveDataToRepo() {
     background: white;
     border-radius: 4px;
     max-width: 200px;
-    overflow: hidden;
+    max-height: 80vh;
+    overflow-x: hidden;
+    overflow-y: scroll;
     transition: 0.5s;
     box-shadow: 1px 2px 6px rgba(#000, 0.3);
     .option {

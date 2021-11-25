@@ -23,5 +23,11 @@
 
 hr{
   border: 0;
-  border-top: 2px solid $template-p;
+  border-top: .5px solid gray;
+}
+
+.slider{
+  label{
+  @include flex
+  }
 }
