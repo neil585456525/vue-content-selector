@@ -8,7 +8,7 @@
     }"
     :style="{ left: xCss, top: yCss }"
   >
-    <span class="drag-btn" @mousedown="startDrag" @mouseup="endDrag">
+    <span ref="dragBtn" class="drag-btn" @mousedown="startDrag" @mouseup="endDrag">
       <font-awesome-icon icon="grip-vertical" />
     </span>
     <slot></slot>
@@ -16,10 +16,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { baseZIndex } from '@/config';
 
 const dragWrapperRef = ref<HTMLElement | null>(null);
+const dragBtn = ref<HTMLElement | null>(null);
 
 // page left
 const x = ref(0);
@@ -29,48 +30,42 @@ const y = ref(50);
 const isDraging = ref(false);
 const isAlignRight = ref(false);
 
-// const views = reactive({
-//   isAlignRight: false,
-//   alignRightEnd: false,
-// });
-
 const xCss = computed(() => (x.value !== -1 ? `${x.value.toString()}px` : '100%'));
 const yCss = computed(() => `${y.value.toString()}px`);
 
-let ElWidth = 180;
 
-function moveEl(event: MouseEvent) {
-  isAlignRight.value = false;
+function moveToMousePosition(event: MouseEvent) {
+  if (!dragBtn.value) return;
+  isDraging.value = true;
+  const rect = dragBtn.value.getBoundingClientRect();
   const { clientX, clientY } = event;
-  x.value = clientX - 20;
-  y.value = clientY - 20;
+  x.value = clientX - rect.width;
+  y.value = clientY - rect.height;
 }
 
 function startDrag() {
-  document.body.addEventListener('mousemove', moveEl);
-  // ensure the element width and set interact scope
-  isDraging.value = true;
-  if (dragWrapperRef.value) {
-    const { width } = dragWrapperRef.value.getBoundingClientRect();
-    ElWidth = width;
-  }
+  document.body.addEventListener('mousemove', moveToMousePosition);
 }
 
 function endDrag() {
-  document.body.removeEventListener('mousemove', moveEl);
+  isDraging.value = false;
+
+  document.body.removeEventListener('mousemove', moveToMousePosition);
   const { width: bodyWidth } = document.body.getBoundingClientRect();
-  if (x.value + ElWidth / 2 < bodyWidth / 2) {
+
+  if (!dragWrapperRef.value) return
+  const { width: dragWrapperWidth } = dragWrapperRef.value.getBoundingClientRect();
+
+  if (x.value + dragWrapperWidth / 2 < bodyWidth / 2) {
     // stick to left
     x.value = 0;
     isAlignRight.value = false;
-    isDraging.value = false;
+
     return;
   }
   // stick to right
   isAlignRight.value = true;
-  isDraging.value = false;
   x.value = bodyWidth;
-  // x.value = -1;
 }
 </script>
 
