@@ -2,7 +2,6 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faGripVertical,
   faChevronLeft,
-  faCog,
   faArrowsAlt,
   faArrowUp,
   faArrowDown,

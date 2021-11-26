@@ -1,5 +1,5 @@
 <template>
-  <button :class="{ primary }" :disabled="isDisabled">
+  <button :class="{ primary, secondary }" :disabled="isDisabled">
     <font-awesome-icon
       v-if="alignIcon === 'start'"
       :class="{ 'mr-1': hasDefaultSlot }"
@@ -21,6 +21,7 @@ import { useSlots, computed } from 'vue';
 const props = withDefaults(defineProps<
   {
     primary?: boolean;
+    secondary?: boolean;
     icon?: string;
     alignIcon?: 'start' | 'end'
     loading?: boolean;
@@ -62,12 +63,21 @@ button {
   svg {
     width: 12px;
   }
+
   &.primary {
     background-color: $primary;
     border-color: $primary;
     color: #fff;
     &:hover {
       background-color: darken($primary, 10);
+    }
+  }
+  &.secondary {
+    background-color: $orange;
+    border-color: $orange;
+    color: #fff;
+    &:hover {
+      background-color: darken($orange, 10);
     }
   }
 

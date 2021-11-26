@@ -3,8 +3,8 @@
     ref="dragWrapperRef"
     class="drag-container"
     :class="{
-      'align-right': views.isAlignRight,
-      'align-right-end': views.alignRightEnd,
+      'align-right': isAlignRight,
+      'on-draging': isDraging
     }"
     :style="{ left: xCss, top: yCss }"
   >
@@ -16,8 +16,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, reactive } from 'vue';
-import { baseZIndex } from '../config';
+import { ref, computed } from 'vue';
+import { baseZIndex } from '@/config';
 
 const dragWrapperRef = ref<HTMLElement | null>(null);
 
@@ -26,10 +26,13 @@ const x = ref(0);
 // page top
 const y = ref(50);
 
-const views = reactive({
-  isAlignRight: false,
-  alignRightEnd: false,
-});
+const isDraging = ref(false);
+const isAlignRight = ref(false);
+
+// const views = reactive({
+//   isAlignRight: false,
+//   alignRightEnd: false,
+// });
 
 const xCss = computed(() => (x.value !== -1 ? `${x.value.toString()}px` : '100%'));
 const yCss = computed(() => `${y.value.toString()}px`);
@@ -37,7 +40,7 @@ const yCss = computed(() => `${y.value.toString()}px`);
 let ElWidth = 180;
 
 function moveEl(event: MouseEvent) {
-  views.alignRightEnd = false;
+  isAlignRight.value = false;
   const { clientX, clientY } = event;
   x.value = clientX - 20;
   y.value = clientY - 20;
@@ -46,6 +49,7 @@ function moveEl(event: MouseEvent) {
 function startDrag() {
   document.body.addEventListener('mousemove', moveEl);
   // ensure the element width and set interact scope
+  isDraging.value = true;
   if (dragWrapperRef.value) {
     const { width } = dragWrapperRef.value.getBoundingClientRect();
     ElWidth = width;
@@ -58,13 +62,13 @@ function endDrag() {
   if (x.value + ElWidth / 2 < bodyWidth / 2) {
     // stick to left
     x.value = 0;
-    views.isAlignRight = false;
-    views.alignRightEnd = false;
+    isAlignRight.value = false;
+    isDraging.value = false;
     return;
   }
   // stick to right
-  views.isAlignRight = true;
-  views.alignRightEnd = true;
+  isAlignRight.value = true;
+  isDraging.value = false;
   x.value = bodyWidth;
   // x.value = -1;
 }
@@ -75,7 +79,7 @@ function endDrag() {
   position: fixed;
   z-index: v-bind(baseZIndex);
   &.align-right {
-    &-end {
+    &:not(.on-draging) {
       transform: translateX(-100%);
     }
     .toolEl {

@@ -71,8 +71,8 @@ const containerStyle = computed<HtmlHTMLAttributes['style']>(() => ({
   display: 'flex',
   flexDirection: 'column',
   width: '100%',
+  border: '2px gray dashed',
   alignItems: alignCss.value,
-  border: '2px gray dashed'
 }));
 
 

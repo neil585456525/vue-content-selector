@@ -23,6 +23,7 @@
             alignIcon="end"
             :loading="isOnSaving"
             :isDisabled="isOnSaving"
+            secondary
           >saving</CButton>
         </section>
         <PopMessage :msg="popMsg.msg" :show="popMsg.show" @reset="popMsg.show = false" />
@@ -34,10 +35,8 @@
 <script lang="ts" setup>
 import { ref, reactive } from 'vue';
 import { storeToRefs } from 'pinia';
-import getCssSelector from 'css-selector-generator';
 import { useMainStore } from '@/store';
 import PopMessage from '@/components/PopMessage.vue';
-import { positionSelector } from '../PositionSelector';
 import DragContainer from './DragContainer.vue';
 import BlockSetting from './BlockSetting/index.vue';
 import CButton from '@/components/CButton.vue';
@@ -45,7 +44,8 @@ import CollapseBtn from './CollapseBtn.vue'
 
 const editWidgetRef = ref<HTMLElement | null>(null);
 
-const { isPreviewChoosing, isSelectElFalse, blockConfig } = storeToRefs(useMainStore());
+const store = useMainStore();
+const { isPreviewChoosing, blockConfig } = storeToRefs(store);
 
 const popMsg = reactive({
   msg: '',
@@ -54,32 +54,21 @@ const popMsg = reactive({
 const isWidgetCollapse = ref(false);
 const openSelectSetting = ref(false);
 
-positionSelector.setOnSelectedHandler((el: HTMLElement) => {
-  isPreviewChoosing.value = false;
-  isWidgetCollapse.value = false;
-  const newSelector = getCssSelector(el, { blacklist: [/src/] });
-  if (newSelector) {
-    blockConfig.value.selector = newSelector;
-  }
-})
-
-let tmpSaveSelector: string = '';
-
 function startChoose() {
-  tmpSaveSelector = blockConfig.value.selector;
-  isPreviewChoosing.value = true;
-  isWidgetCollapse.value = true;
-  blockConfig.value.selector = '';
-  positionSelector
-    .setInsertPosition(blockConfig.value.insertPosition)
-    .startSelector();
+  store.startPositionSelector(
+    () => {
+      isWidgetCollapse.value = true
+    },
+    () => {
+      isWidgetCollapse.value = false;
+    }
+  );
 }
 
 function cancelChoose() {
-  isPreviewChoosing.value = false;
-  isWidgetCollapse.value = false;
-  positionSelector.stopSelector();
-  blockConfig.value.selector = tmpSaveSelector;
+  store.cancelPositionSelector(() => {
+    isWidgetCollapse.value = false;
+  })
 }
 
 const isOnSaving = ref(false);
@@ -147,11 +136,5 @@ async function saveDataToRepo() {
 
 .save-btn {
   width: 100%;
-  background-color: $orange;
-  border-color: $orange;
-  color: #fff;
-  &:hover:not(:disabled) {
-    background-color: darken($orange, 10);
-  }
 }
 </style>
