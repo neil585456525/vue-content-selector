@@ -18,7 +18,6 @@ const config = {
     filename: '[name].js'
   },
   devServer: {
-    // 外部造訪用的路由（非實際檔案，為記憶體空間）
     publicPath: '/sdk/',
     compress: true,
     port: 3000,
@@ -46,8 +45,7 @@ const config = {
     new webpack.DefinePlugin({
       // tree shake (vue feature toggle)
       __VUE_OPTIONS_API__: false,
-      // 環境變數注入
-      // ! 注入都需要 stringfy
+      // inject enviroment variable -> need strinfy
       'process.env.SDK_MODE': JSON.stringify(mode),
     }),
     new CleanWebpackPlugin(),
@@ -56,7 +54,7 @@ const config = {
     ...(mode === 'development' ? [new webpack.HotModuleReplacementPlugin()] : [])
     // new BundleAnalyzerPlugin(),
   ],
-  // production 才會觸發
+  // used in production
   optimization: {
     minimize: true,
     minimizer: [new TerserPlugin({

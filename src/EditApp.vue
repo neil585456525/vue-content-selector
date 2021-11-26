@@ -3,28 +3,20 @@
     <section ref="styleDom"></section>
     <main>
       <Widget />
-      <ContentProcessor />
-      <transition name="fade">
-        <div class="find-el-msg" v-if="isOnFindElLoading">正在找尋區塊... 注意：過久顯示內容將影響使用者體驗，建議選擇較快載入的區塊</div>
-      </transition>
+      <BlockProcessor />
     </main>
   </shadow-root>
 </template>
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
-import { storeToRefs } from 'pinia';
-import Widget from '@/view/Widget.vue';
-import ContentProcessor from '@/view/ContentProcessor.vue';
-import { useMainStore } from '@/store';
+import Widget from '@/view/Widget/index.vue';
+import BlockProcessor from '@/view/BlockProcessor/index.vue';
 
 const styleDom = ref(null);
 
-const { isOnFindElLoading } = storeToRefs(useMainStore());
-
-// 一開始先取區塊位置資料，並觸發渲染
 onMounted(async () => {
-  // 注入 style 進 shadow
+  // inject style into shadow root
   window.dottaShadowStyleObj.loadStyles(styleDom.value);
 });
 

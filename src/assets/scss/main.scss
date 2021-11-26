@@ -1,4 +1,3 @@
-@import './button';
 @import './margin';
 
 .fade-enter-active,
@@ -19,4 +18,43 @@
 }
 .fa-spinner {
   animation: spinner 1.5s linear infinite;
+}
+
+hr{
+  border: 0;
+  border-top: .5px solid gray;
+}
+
+.slider{
+  label{
+  @include flex
+  }
+}
+
+.drag-container {
+  &.align-right{
+    .collapse-btn{
+      transform: rotateY(180deg);
+      left: auto;
+      right: 100%;
+    }
+    .stop-sel-btn{
+      right: 0;
+      left: auto;
+    }
+  }
+}
+
+.btn-group{
+  display: flex;
+  button:nth-child(1) {
+    border-radius: 4px 0px 0px 4px;
+  }
+  button:nth-last-child(1) {
+    border-radius: 0px 4px 4px 0px;
+    border-left: 1px solid $border;
+  }
+  .btn-main{
+    flex: 1;
+  }
 }
