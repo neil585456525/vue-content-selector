@@ -2,7 +2,7 @@
   <DynamicContent
     v-if="blockConfig.selector"
     :blockConfig="blockConfig"
-    @onContentBuilding="onContentBuilding"
+    @onBeforeContentBuilding="onBeforeContentBuilding"
     @onContentBuilded="onContentBuilded"
     @onContentBuildFaild="onContentBuildFaild"
   >
@@ -13,36 +13,29 @@
 </template>
 
 <script lang="ts" setup>
-import { HtmlHTMLAttributes, ref } from 'vue';
+import { HtmlHTMLAttributes } from 'vue';
 import { storeToRefs } from 'pinia';
-import DynamicContent from './DynamicContent/index.vue';
+import DynamicContent from './BlockBuilder.vue';
 import { useMainStore } from '@/store';
 
-const contentSectionDom = ref<HTMLElement | null>(null);
+let contentSectionDom: HTMLElement | null = null;
 
-const { blockConfig, isOnFindElLoading, isSelectElFalse } = storeToRefs(useMainStore());
+const { blockConfig } = storeToRefs(useMainStore());
 
-function onContentBuilding() {
+function onBeforeContentBuilding() {
   // remove old dom first
-  if (contentSectionDom.value) {
-    contentSectionDom.value.remove();
-  }
-  isOnFindElLoading.value = true;
+  if (contentSectionDom) contentSectionDom.remove();
 }
 
 function onContentBuilded(editSectionEl: HTMLElement) {
-  isOnFindElLoading.value = false;
-  isSelectElFalse.value = false;
   editSectionEl.scrollIntoView({
     behavior: 'smooth',
     block: 'center'
   });
-  contentSectionDom.value = editSectionEl;
+  contentSectionDom = editSectionEl;
 }
 
 function onContentBuildFaild() {
-  isOnFindElLoading.value = false;
-  isSelectElFalse.value = true;
   alert('onSelectFailed');
 }
 

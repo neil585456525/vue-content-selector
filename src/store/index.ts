@@ -16,9 +16,7 @@ export const useMainStore = defineStore({
       width: 100,
     },
     isPreviewChoosing: false,
-    isOnFindElLoading: false,
     isShowSectionBg: false,
-    isSelectElFalse: false,
   } as State),
   actions: {
     startPositionSelector(startCb: () => void = () => { }, successCb: () => void = () => { }) {

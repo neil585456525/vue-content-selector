@@ -3,24 +3,17 @@
     <section ref="styleDom"></section>
     <main>
       <Widget />
-      <ContentProcessor />
-      <transition name="fade">
-        <div class="find-el-msg" v-if="isOnFindElLoading">trying to find element by selector...</div>
-      </transition>
+      <BlockProcessor />
     </main>
   </shadow-root>
 </template>
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
-import { storeToRefs } from 'pinia';
 import Widget from '@/view/Widget/index.vue';
-import ContentProcessor from '@/view/ContentProcessor/index.vue';
-import { useMainStore } from '@/store';
+import BlockProcessor from '@/view/BlockProcessor/index.vue';
 
 const styleDom = ref(null);
-
-const { isOnFindElLoading } = storeToRefs(useMainStore());
 
 onMounted(async () => {
   // inject style into shadow root

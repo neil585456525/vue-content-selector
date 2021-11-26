@@ -2,21 +2,14 @@
   <main>
     <section class="select-setting mt-2">
       <Radio
-        style="width: 30%;"
+        style="width: 45%;"
         icon="arrow-up"
         text="insert before"
         :is-active="blockConfig.insertPosition === 'top'"
         @click="store.blockConfig.insertPosition = 'top'"
       />
       <Radio
-        style="width: 30%;"
-        icon="arrow-up"
-        text="insert before"
-        :is-active="blockConfig.insertPosition === 'top'"
-        @click="store.blockConfig.insertPosition = 'top'"
-      />
-      <Radio
-        style="width: 30%;"
+        style="width: 45%;"
         icon="arrow-down"
         text="insert after"
         :is-active="blockConfig.insertPosition === 'bottom'"
@@ -61,34 +54,5 @@ const alignOptions: SelectModel[] = [{ name: 'left', value: 'start' }, { name: '
   display: flex;
   justify-content: center;
   transition: 0.3s ease-in-out;
-  .btn-item {
-    font-size: 14px;
-    padding: 3px 3px;
-    margin: 5px 5px;
-    transition: 0.2s;
-    border: 1px solid rgb(219, 217, 217);
-    border-radius: 3px;
-    &.active {
-      background-color: rgb(214, 214, 214);
-    }
-    &:hover {
-      background-color: #eee;
-    }
-    span {
-      position: relative;
-      display: flex;
-      justify-content: center;
-      margin-bottom: 5px;
-      &::after {
-        content: "";
-        position: absolute;
-        display: inline-block;
-        height: 2px;
-        width: 16px;
-        background-color: $template-r;
-        bottom: 0;
-      }
-    }
-  }
 }
 </style>
