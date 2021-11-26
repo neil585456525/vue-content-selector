@@ -1,23 +1,26 @@
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
   faGripVertical,
-  faChevronRight,
+  faChevronLeft,
   faCog,
   faArrowsAlt,
   faArrowUp,
   faArrowDown,
   faSpinner,
+  faCrosshairs,
+  faPaintBrush
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 library.add(
   faGripVertical,
-  faChevronRight,
-  faCog,
+  faChevronLeft,
+  faPaintBrush,
   faArrowsAlt,
   faArrowUp,
   faArrowDown,
-  faSpinner
+  faSpinner,
+  faCrosshairs
 );
 
 export { FontAwesomeIcon };

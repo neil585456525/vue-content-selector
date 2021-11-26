@@ -5,16 +5,11 @@
 <script lang="ts" setup>
 import { watch } from 'vue';
 
-const props = defineProps({
-  msg: {
-    type: String,
-    require: true,
-  },
-  show: {
-    type: Boolean,
-    require: true,
-  }
-});
+const props = defineProps<{
+  msg: string,
+  show: Boolean
+}
+>();
 
 const emit = defineEmits(['reset']);
 

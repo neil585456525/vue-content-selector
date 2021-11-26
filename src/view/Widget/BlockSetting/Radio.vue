@@ -12,11 +12,11 @@
 
 <script lang="ts" setup>
 
-const props = defineProps({
+const props = defineProps<{
   icon: String,
   text: String,
   isActive: Boolean
-})
+}>()
 
 </script>
 

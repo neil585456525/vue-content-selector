@@ -3,30 +3,27 @@
     <DragContainer>
       <div class="toolEl" :class="{ hide: isWidgetCollapse }">
         <!-- fold btn -->
-        <button
-          class="btn collapse-btn"
-          :class="{ active: isWidgetCollapse }"
+        <CollapseBtn
           v-if="!isPreviewChoosing"
           @click="isWidgetCollapse = !isWidgetCollapse"
-        >
-          <font-awesome-icon icon="chevron-right" />
-        </button>
+          :active="isWidgetCollapse"
+        />
         <!-- cancel selecting -->
-        <button v-else @click="cancelChoose" class="btn btn-primary stop-sel-btn">cancel</button>
+        <CButton v-else @click="cancelChoose" class="stop-sel-btn" primary>cancel</CButton>
         <section class="option mt-4">
-          <!-- <div class="mt-1 mb-1 infor-text" v-if="isSelectElFalse">invalid position</div> -->
           <div class="btn-group">
-            <button class="btn btn-primary btn-main" @click="startChoose">start select</button>
-            <button class="btn btn-primary" @click="openSelectSetting = !openSelectSetting">
-              <font-awesome-icon icon="cog" />
-            </button>
+            <CButton class="btn-main" @click="startChoose" icon="crosshairs" primary>start select</CButton>
+            <CButton icon="paint-brush" primary @click="openSelectSetting = !openSelectSetting"></CButton>
           </div>
-          <div v-if="blockConfig.selector" class="mt-1 btn selector">{{ blockConfig.selector }}</div>
-          <span style="border-left: 1px white solid;"></span>
+          <CButton v-if="blockConfig.selector" class="mt-1 btn selector">{{ blockConfig.selector }}</CButton>
           <BlockSetting v-show="openSelectSetting" />
-          <button class="btn save-btn mt-1" @click="saveDataToRepo" :disabled="isOnSaving">
-            <font-awesome-icon icon="spinner" v-if="isOnSaving" />saving
-          </button>
+          <CButton
+            class="save-btn mt-1"
+            @click="saveDataToRepo"
+            alignIcon="end"
+            :loading="isOnSaving"
+            :isDisabled="isOnSaving"
+          >saving</CButton>
         </section>
         <PopMessage :msg="popMsg.msg" :show="popMsg.show" @reset="popMsg.show = false" />
       </div>
@@ -43,6 +40,8 @@ import PopMessage from '@/components/PopMessage.vue';
 import { positionSelector } from '../PositionSelector';
 import DragContainer from './DragContainer.vue';
 import BlockSetting from './BlockSetting/index.vue';
+import CButton from '@/components/CButton.vue';
+import CollapseBtn from './CollapseBtn.vue'
 
 const editWidgetRef = ref<HTMLElement | null>(null);
 
@@ -98,47 +97,61 @@ async function saveDataToRepo() {
 }
 </script>
 
-<style lang="scss">
-.widget {
-  .toolEl {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
-    background: white;
-    border-radius: 4px;
-    max-width: 200px;
-    max-height: 80vh;
-    overflow-x: hidden;
-    overflow-y: scroll;
-    transition: 0.5s;
-    box-shadow: 1px 2px 6px rgba(#000, 0.3);
-    .option {
-      min-width: 170px;
-      padding: 15px 10px;
-    }
-    &.hide {
-      max-width: 0;
-    }
-    button {
-      white-space: nowrap;
-    }
+<style lang="scss" scoped>
+.toolEl {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+  background: white;
+  border-radius: 4px;
+  max-width: 200px;
+  max-height: 80vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  transition: 0.5s;
+  box-shadow: 1px 2px 6px rgba(#000, 0.3);
+  .option {
+    min-width: 170px;
+    padding: 15px 10px;
   }
-
-  .infor-text {
-    color: #5a62b3;
-    display: flex;
-    align-items: center;
+  &.hide {
+    max-width: 0;
   }
-
-  #event_list {
-    max-height: 150px;
-    overflow: scroll;
-    width: 120px;
-  }
-
-  .selector {
-    overflow: hidden;
+  button {
     white-space: nowrap;
-    width: 100%;
-    text-overflow: ellipsis;
+  }
+}
+
+.stop-sel-btn {
+  position: absolute;
+  left: 10px;
+  z-index: 1;
+}
+
+.infor-text {
+  color: #5a62b3;
+  display: flex;
+  align-items: center;
+}
+
+#event_list {
+  max-height: 150px;
+  overflow: scroll;
+  width: 120px;
+}
+
+.selector {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+  text-overflow: ellipsis;
+}
+
+.save-btn {
+  width: 100%;
+  background-color: $orange;
+  border-color: $orange;
+  color: #fff;
+  &:hover:not(:disabled) {
+    background-color: darken($orange, 10);
   }
 }
 </style>

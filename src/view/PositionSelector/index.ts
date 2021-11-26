@@ -114,7 +114,7 @@ class PositionSelector {
 
       if (this.insertPosition === 'bottom') newHoverEl.after(privewEl);
       if (this.insertPosition === 'top') newHoverEl.before(privewEl);
-    }, { immediate: true })
+    })
 
     return {
       start: resume,

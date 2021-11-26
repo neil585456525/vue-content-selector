@@ -14,45 +14,44 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, PropType, computed, watch, HtmlHTMLAttributes } from 'vue';
+import { ref, computed, watch, HtmlHTMLAttributes } from 'vue';
 import { useMediaQuery } from '@vueuse/core';
 import { addContentSection } from './ContentWrapperBuilder';
 import type { BlockConfig } from '@/type';
 
-const props = defineProps({
-  blockConfig: {
-    type: Object as PropType<BlockConfig>,
-    required: true
-  }
-});
+const props = defineProps<{
+  blockConfig: BlockConfig
+}>();
 
-const emit = defineEmits(['onSelecting', 'selected', 'selectFailed']);
+const emit = defineEmits<{
+  (e: 'onContentBuilding'): void,
+  (e: 'onContentBuilded', el: HTMLElement): void,
+  (e: 'onContentBuildFaild'): void
+}>();
 
 const contentSectionDom = ref<HTMLElement | null>(null);
-const selector = computed(() => props.blockConfig.selector);
-const insertPosition = computed(() => props.blockConfig.insertPosition);
 
 async function initSection() {
   try {
-    emit('onSelecting');
+    emit('onContentBuilding');
     const contentSectionEl = await addContentSection(
-      selector.value,
-      insertPosition.value
+      props.blockConfig.selector,
+      props.blockConfig.insertPosition
     );
     contentSectionDom.value = contentSectionEl;
-    emit('selected', contentSectionEl);
-    console.log('selected');
+    emit('onContentBuilded', contentSectionEl);
   } catch (err) {
     contentSectionDom.value = null;
-    emit('selectFailed');
+    emit('onContentBuildFaild');
     console.log(err);
     console.log('error');
   }
 }
+
 initSection();
 
 // 因為上下不會重新渲染整個組件，所以需要利用 watch 去觸發重渲染
-watch(() => insertPosition.value, () => {
+watch(() => props.blockConfig.insertPosition, () => {
   if (!contentSectionDom.value) return;
   contentSectionDom.value.remove();
   initSection();
@@ -76,10 +75,9 @@ const containerStyle = computed<HtmlHTMLAttributes['style']>(() => ({
   border: '2px gray dashed'
 }));
 
-const isMobileWidth = useMediaQuery('(max-width: 550px)');
 
 const widthCss = computed(() => {
-  if (isMobileWidth.value) return '100%';
+  if (useMediaQuery('(max-width: 550px)').value) return '100%';
   return `${props.blockConfig.width || 80}%`;
 });
 </script>
