@@ -13,9 +13,12 @@ const mode = process.env.NODE_ENV === 'development' ? 'development' : 'productio
 const config = {
   mode,
   entry: './src/main.ts',
+  externals: { vue: "vue" },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].js'
+    filename: '[name].js',
+    library: 'VueContentSelector',
+    libraryTarget: 'umd'
   },
   devServer: {
     publicPath: '/sdk/',

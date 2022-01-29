@@ -2,6 +2,7 @@
   <shadow-root>
     <section ref="styleDom"></section>
     <main>
+      456465
       <Widget />
       <BlockProcessor />
     </main>
@@ -9,17 +10,16 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
-import Widget from '@/view/Widget/index.vue';
-import BlockProcessor from '@/view/BlockProcessor/index.vue';
+import { onMounted, ref } from "vue";
+import Widget from "@/view/Widget/index.vue";
+import BlockProcessor from "@/view/BlockProcessor/index.vue";
 
 const styleDom = ref(null);
 
-onMounted(async () => {
+onMounted(() => {
   // inject style into shadow root
   window.dottaShadowStyleObj.loadStyles(styleDom.value);
 });
-
 </script>
 
 <style lang="scss">

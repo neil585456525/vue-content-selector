@@ -1,9 +1,11 @@
 {
   "name": "sdk",
   "version": "0.0.0",
+  "main": "dist/main.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack serve",
-    "build": "cross-env NODE_ENV=production webpack"
+    "build": "cross-env NODE_ENV=production webpack",
+    "watch": "webpack --watch --mode development"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
@@ -12,8 +14,8 @@
     "@vueuse/core": "^5.0.3",
     "css-selector-generator": "^3.0.1",
     "pinia": "2.0.4",
-    "vue": "3.2.20",
-    "vue-shadow-dom": "^2.0.0"
+    "vue-shadow-dom": "^2.0.0",
+    "vue": "^3.2.21"
   },
   "devDependencies": {
     "@types/node": "^16.11.6",
@@ -33,5 +35,8 @@
     "webpack-cli": "^4.7.2",
     "webpack-dev-server": "^3.11.2",
     "webpackbar": "^5.0.0-3"
+  },
+  "peerDependencies": {
+    "vue": "^3.2.21"
   }
 }

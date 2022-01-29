@@ -1,30 +1,16 @@
-import { createApp } from 'vue';
+import type { App } from 'vue';
 import { createPinia } from 'pinia';
 import shadow from 'vue-shadow-dom';
-import { createDivWithId, initHelper } from './helper/utils';
+// import { createDivWithId, initHelper } from './helper/utils';
 import { FontAwesomeIcon } from './fontIcon';
-import EditApp from './EditApp.vue';
+import VueContentSelector from './VueContentSelector.vue';
 
-async function init(): Promise<void> {
-  try {
-    initHelper(async () => {
-      const appDom = createDivWithId('dotta_app');
-      document.body.appendChild(appDom);
-      // init Vue
-      const app = createApp(EditApp);
-      app
-        .use(createPinia())
-        .use(shadow)
-        .component('font-awesome-icon', FontAwesomeIcon)
-        .mount(appDom);
-    });
-  } catch (err) {
-    console.log('init edit false');
-    console.error(err);
-  }
+const install = (app: App) => {
+  app
+    .use(createPinia())
+    .use(shadow)
+    .component('font-awesome-icon', FontAwesomeIcon)
+    .component('vue-content-selector', VueContentSelector)
 }
 
-//@ts-ignore
-window.vcs = {
-  init,
-}
+export default { install }
