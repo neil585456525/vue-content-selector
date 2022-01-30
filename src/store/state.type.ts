@@ -8,6 +8,6 @@ export interface State {
   // 用於儲存判斷
   blockConfig: BlockConfig;
   isPreviewChoosing: boolean;
-  isShowSectionBg: boolean;
-  isSelectElFalse: boolean;
+  // isShowSectionBg: boolean;
+  // isSelectElFalse: boolean;
 }

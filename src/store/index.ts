@@ -19,9 +19,9 @@ export const useMainStore = defineStore({
     isShowSectionBg: false,
   } as State),
   actions: {
-    startPositionSelector(startCb: () => void = () => { }, successCb: () => void = () => { }) {
+    startPositionSelector(startCb: () => void = () => { }, successCb: (el: Element) => void = () => { }) {
       positionSelector.setOnSelectedHandler((el: HTMLElement) => {
-        successCb();
+        successCb(el);
         this.isPreviewChoosing = false;
         const newSelector = getCssSelector(el, { blacklist: [/src/] });
         if (newSelector) {

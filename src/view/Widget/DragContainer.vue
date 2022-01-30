@@ -4,7 +4,7 @@
     class="drag-container"
     :class="{
       'align-right': isAlignRight,
-      'on-draging': isDraging
+      'on-draging': isDraging,
     }"
     :style="{ left: xCss, top: yCss }"
   >
@@ -16,8 +16,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, onMounted } from 'vue';
-import { baseZIndex } from '@/config';
+import { ref, computed } from "vue";
+import { baseZIndex } from "@/config";
 
 const dragWrapperRef = ref<HTMLElement | null>(null);
 const dragBtn = ref<HTMLElement | null>(null);
@@ -30,9 +30,8 @@ const y = ref(50);
 const isDraging = ref(false);
 const isAlignRight = ref(false);
 
-const xCss = computed(() => (x.value !== -1 ? `${x.value.toString()}px` : '100%'));
+const xCss = computed(() => (x.value !== -1 ? `${x.value.toString()}px` : "100%"));
 const yCss = computed(() => `${y.value.toString()}px`);
-
 
 function moveToMousePosition(event: MouseEvent) {
   if (!dragBtn.value) return;
@@ -44,16 +43,16 @@ function moveToMousePosition(event: MouseEvent) {
 }
 
 function startDrag() {
-  document.body.addEventListener('mousemove', moveToMousePosition);
+  document.body.addEventListener("mousemove", moveToMousePosition);
 }
 
 function endDrag() {
   isDraging.value = false;
 
-  document.body.removeEventListener('mousemove', moveToMousePosition);
+  document.body.removeEventListener("mousemove", moveToMousePosition);
   const { width: bodyWidth } = document.body.getBoundingClientRect();
 
-  if (!dragWrapperRef.value) return
+  if (!dragWrapperRef.value) return;
   const { width: dragWrapperWidth } = dragWrapperRef.value.getBoundingClientRect();
 
   if (x.value + dragWrapperWidth / 2 < bodyWidth / 2) {

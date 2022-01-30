@@ -9,13 +9,23 @@
           :active="isWidgetCollapse"
         />
         <!-- cancel selecting -->
-        <CButton v-else @click="cancelChoose" class="stop-sel-btn" primary>cancel</CButton>
+        <CButton v-else @click="cancelChoose" class="stop-sel-btn" primary
+          >cancel</CButton
+        >
         <section class="option mt-4">
           <div class="btn-group">
-            <CButton class="btn-main" @click="startChoose" icon="crosshairs" primary>start select</CButton>
-            <CButton icon="paint-brush" primary @click="openSelectSetting = !openSelectSetting"></CButton>
+            <CButton class="btn-main" @click="startChoose" icon="crosshairs" primary
+              >start select</CButton
+            >
+            <CButton
+              icon="paint-brush"
+              primary
+              @click="openSelectSetting = !openSelectSetting"
+            ></CButton>
           </div>
-          <CButton v-if="blockConfig.selector" class="mt-1 btn selector">{{ blockConfig.selector }}</CButton>
+          <CButton v-if="blockConfig.selector" class="mt-1 btn selector">{{
+            blockConfig.selector
+          }}</CButton>
           <BlockSetting v-show="openSelectSetting" />
           <CButton
             class="save-btn mt-1"
@@ -24,7 +34,8 @@
             :loading="isOnSaving"
             :isDisabled="isOnSaving"
             secondary
-          >saving</CButton>
+            >saving</CButton
+          >
         </section>
         <PopMessage :msg="popMsg.msg" :show="popMsg.show" @reset="popMsg.show = false" />
       </div>
@@ -33,14 +44,15 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive } from 'vue';
-import { storeToRefs } from 'pinia';
-import { useMainStore } from '@/store';
-import PopMessage from '@/components/PopMessage.vue';
-import DragContainer from './DragContainer.vue';
-import BlockSetting from './BlockSetting/index.vue';
-import CButton from '@/components/CButton.vue';
-import CollapseBtn from './CollapseBtn.vue'
+import { ref, reactive, inject } from "vue";
+import { storeToRefs } from "pinia";
+import { useMainStore } from "@/store";
+import PopMessage from "@/components/PopMessage.vue";
+import DragContainer from "./DragContainer.vue";
+import BlockSetting from "./BlockSetting/index.vue";
+import CButton from "@/components/CButton.vue";
+import CollapseBtn from "./CollapseBtn.vue";
+import type { StoreProvider } from "@/type";
 
 const editWidgetRef = ref<HTMLElement | null>(null);
 
@@ -48,18 +60,21 @@ const store = useMainStore();
 const { isPreviewChoosing, blockConfig } = storeToRefs(store);
 
 const popMsg = reactive({
-  msg: '',
+  msg: "",
   show: false,
 });
 const isWidgetCollapse = ref(false);
 const openSelectSetting = ref(false);
 
+const storeInject = inject("storeProvider") as StoreProvider;
+
 function startChoose() {
   store.startPositionSelector(
     () => {
-      isWidgetCollapse.value = true
+      isWidgetCollapse.value = true;
     },
-    () => {
+    (el) => {
+      storeInject.emitPositionSelected(el);
       isWidgetCollapse.value = false;
     }
   );
@@ -67,15 +82,16 @@ function startChoose() {
 
 function cancelChoose() {
   store.cancelPositionSelector(() => {
+    storeInject.emitCanceled();
     isWidgetCollapse.value = false;
-  })
+  });
 }
 
 const isOnSaving = ref(false);
 
 function endSaving() {
   isOnSaving.value = false;
-  popMsg.msg = '儲存成功';
+  popMsg.msg = "success";
   popMsg.show = true;
 }
 

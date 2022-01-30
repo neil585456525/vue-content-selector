@@ -1,13 +1,13 @@
 <template>
   <button :class="{ primary, secondary }" :disabled="isDisabled">
     <font-awesome-icon
-      v-if="alignIcon === 'start'"
+      v-if="alignIcon === 'start' && icon"
       :class="{ 'mr-1': hasDefaultSlot }"
       :icon="loading ? 'spinner' : icon"
     />
     <slot></slot>
     <font-awesome-icon
-      v-if="alignIcon === 'end'"
+      v-if="alignIcon === 'end' && icon"
       :class="{ 'ml-1': hasDefaultSlot }"
       :icon="loading ? 'spinner' : icon"
     />
@@ -15,26 +15,26 @@
 </template>
 
 <script lang="ts" setup>
+import { useSlots, computed } from "vue";
 
-import { useSlots, computed } from 'vue';
-
-const props = withDefaults(defineProps<
-  {
+const props = withDefaults(
+  defineProps<{
     primary?: boolean;
     secondary?: boolean;
     icon?: string;
-    alignIcon?: 'start' | 'end'
+    alignIcon?: "start" | "end";
     loading?: boolean;
     isDisabled?: boolean;
-  }>(), {
-  isDisabled: false,
-  alignIcon: 'start'
-})
+  }>(),
+  {
+    isDisabled: false,
+    alignIcon: "start",
+  }
+);
 
 const slots = useSlots();
 
-const hasDefaultSlot = computed(() => slots.default ? true : false)
-
+const hasDefaultSlot = computed(() => (slots.default ? true : false));
 </script>
 
 <style lang="scss" scoped>
