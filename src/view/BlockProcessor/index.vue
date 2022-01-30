@@ -1,21 +1,40 @@
 <template>
-  <DynamicContent
-    v-if="storeInject.blockConfig.selector"
+  <BlockBuilder
+    v-if="storeInject.blockConfig.selectedElement"
     :blockConfig="storeInject.blockConfig"
+    :isContentStyleShadow="isContentStyleShadow"
     @onBeforeContentBuilding="onBeforeContentBuilding"
     @onContentBuilded="onContentBuilded"
     @onContentBuildFaild="onContentBuildFaild"
   >
-    <template #noContent>
-      <div :style="noContentStyle">content block</div>
+    <template #style>
+      <section
+        v-if="contentStyle"
+        v-html="`<style type='text/css'>${contentStyle}</style>`"
+      ></section>
     </template>
-  </DynamicContent>
+    <template #content>
+      <slot>
+        <div :style="noContentStyle">content block</div>
+      </slot>
+    </template>
+  </BlockBuilder>
 </template>
 
 <script lang="ts" setup>
 import { HtmlHTMLAttributes, inject } from "vue";
-import DynamicContent from "./BlockBuilder.vue";
+import BlockBuilder from "./BlockBuilder.vue";
 import type { StoreProvider } from "@/type";
+
+interface Props {
+  isContentStyleShadow?: boolean;
+  contentStyle?: string;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  isContentStyleShadow: false,
+  contentStyle: "",
+});
 
 let contentSectionDom: HTMLElement | null = null;
 
@@ -35,7 +54,7 @@ function onContentBuilded(editSectionEl: HTMLElement) {
 }
 
 function onContentBuildFaild() {
-  alert("onSelectFailed");
+  console.error("onSelectFailed");
 }
 
 const noContentStyle: HtmlHTMLAttributes["style"] = {

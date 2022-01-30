@@ -3,33 +3,34 @@
     <section ref="styleDom"></section>
     <main>
       <Widget />
-      <BlockProcessor />
+      <BlockProcessor
+        :contentStyle="contentStyleInShadow"
+        :isContentStyleShadow="isContentStyleShadow"
+      >
+        <slot> </slot>
+      </BlockProcessor>
     </main>
   </shadow-root>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, reactive, computed, provide } from "vue";
+import { onMounted, ref, reactive, provide } from "vue";
 import Widget from "@/view/Widget/index.vue";
 import BlockProcessor from "@/view/BlockProcessor/index.vue";
 import type { StoreProvider } from "@/type";
-import getCssSelector from "css-selector-generator";
 import { positionSelector } from "@/service/PositionSelector";
-
-const styleDom = ref(null);
 
 interface Props {
   isContentStyleShadow?: boolean;
-  contentStyle?: string;
+  contentStyleInShadow?: string;
   baseZIndex?: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  isContentStyleShadow: true,
+  isContentStyleShadow: false,
+  contentStyle: "",
   baseZIndex: 10000,
 });
-
-const baseZIndex = computed(() => props.baseZIndex);
 
 const emits = defineEmits<{
   (e: "onHoverChanged", el: Element): void;
@@ -37,35 +38,31 @@ const emits = defineEmits<{
   (e: "onCanceled"): void;
 }>();
 
-let tmpSaveSelector = "";
+let tmpSaveSelectedElement: StoreProvider["blockConfig"]["selectedElement"] = null;
 
 const storeProvider = reactive<StoreProvider>({
   baseZIndex: props.baseZIndex,
   blockConfig: {
-    selector: "",
+    selectedElement: null,
     insertPosition: "bottom",
     align: "center",
     width: 100,
   },
   isPreviewChoosing: false,
-  isShowSectionBg: false,
   startPositionSelector(
     startCb: () => void = () => {},
     successCb: (el: Element) => void = () => {}
   ) {
-    tmpSaveSelector = this.blockConfig.selector;
+    tmpSaveSelectedElement = this.blockConfig.selectedElement;
     this.isPreviewChoosing = true;
-    this.blockConfig.selector = "";
+    this.blockConfig.selectedElement = null;
 
-    positionSelector.baseZIndex = storeProvider.baseZIndex;
     positionSelector
+      .setBaseZIndex(storeProvider.baseZIndex)
       .setOnSelectedHandler((el: HTMLElement) => {
         emits("onPositionSelected", el), successCb(el);
         this.isPreviewChoosing = false;
-        const newSelector = getCssSelector(el, { blacklist: [/src/] });
-        if (newSelector) {
-          this.blockConfig.selector = newSelector;
-        }
+        this.blockConfig.selectedElement = el;
       })
       .setOnHoverChangedHandler((el) => {
         emits("onHoverChanged", el);
@@ -78,7 +75,7 @@ const storeProvider = reactive<StoreProvider>({
   cancelPositionSelector(cancelCb: () => void) {
     this.isPreviewChoosing = false;
     positionSelector.stopSelector();
-    this.blockConfig.selector = tmpSaveSelector;
+    this.blockConfig.selectedElement = tmpSaveSelectedElement;
     emits("onCanceled"), cancelCb();
   },
 });
@@ -86,6 +83,7 @@ const storeProvider = reactive<StoreProvider>({
 provide("storeProvider", storeProvider);
 
 // inject style into shadow root
+const styleDom = ref(null);
 onMounted(() => {
   window.dottaShadowStyleObj.loadStyles(styleDom.value);
 });

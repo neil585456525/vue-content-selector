@@ -1,15 +1,15 @@
 <template>
   <teleport v-if="contentSectionDom" :to="contentSectionDom">
-    <!-- <shadow-root> -->
-    <section style="width: 100%; all: initial">
-      <div class="wrapper-container" :style="containerStyle">
-        <div :style="{ width: widthCss }">
-          <div v-if="content" v-html="content"></div>
-          <slot v-else name="noContent"></slot>
+    <component :is="isContentStyleShadow ? 'shadow-root' : 'div'">
+      <slot name="style"></slot>
+      <section style="width: 100%; all: initial">
+        <div class="wrapper-container" :style="containerStyle">
+          <div :style="{ width: widthCss }">
+            <slot name="content"></slot>
+          </div>
         </div>
-      </div>
-    </section>
-    <!-- </shadow-root> -->
+      </section>
+    </component>
   </teleport>
 </template>
 
@@ -20,7 +20,7 @@ import type { BlockConfig } from "@/type";
 
 const props = defineProps<{
   blockConfig: BlockConfig;
-  content?: string;
+  isContentStyleShadow?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -32,31 +32,28 @@ const emit = defineEmits<{
 const contentSectionDom = ref<HTMLElement | null>(null);
 
 const initSection = () => {
+  if (!props.blockConfig.selectedElement) throw new Error("no selectedElement");
+
   function addContentSection(
-    selector: string,
+    selectedElement: Element,
     insertPosition: "top" | "bottom" = "top"
   ): HTMLElement {
-    let targetEl = document.querySelector(selector);
-    if (!targetEl) {
-      throw new Error("cant get el by selector");
-    }
     const el = document.createElement("div");
     if (insertPosition === "bottom") {
-      targetEl.after(el);
+      selectedElement.after(el);
       return el;
     }
-    targetEl.before(el);
+    selectedElement.before(el);
     return el;
   }
 
   try {
     emit("onBeforeContentBuilding");
-    const contentSectionEl = addContentSection(
-      props.blockConfig.selector,
+    contentSectionDom.value = addContentSection(
+      props.blockConfig.selectedElement,
       props.blockConfig.insertPosition
     );
-    contentSectionDom.value = contentSectionEl;
-    emit("onContentBuilded", contentSectionEl);
+    emit("onContentBuilded", contentSectionDom.value);
   } catch (err) {
     contentSectionDom.value = null;
     emit("onContentBuildFaild");
@@ -65,15 +62,6 @@ const initSection = () => {
 };
 
 initSection();
-
-watch(
-  () => props.blockConfig.insertPosition,
-  () => {
-    if (!contentSectionDom.value) return;
-    contentSectionDom.value.remove();
-    initSection();
-  }
-);
 
 /**
  * style config
@@ -99,4 +87,19 @@ const widthCss = computed(() => {
   if (useMediaQuery("(max-width: 550px)").value) return "100%";
   return `${props.blockConfig.width || 80}%`;
 });
+
+/**
+ * ? has ploblem
+ * Every props-causing re-render should build a new contentSectionDom to avoid lifecycle unMounted error.
+ * It's need to watch both insertPosition and width.
+ */
+
+watch(
+  () => [props.blockConfig.insertPosition, widthCss.value],
+  () => {
+    if (!contentSectionDom.value) return;
+    contentSectionDom.value.remove();
+    initSection();
+  }
+);
 </script>

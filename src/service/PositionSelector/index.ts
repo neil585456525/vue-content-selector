@@ -31,7 +31,7 @@ class PositionSelector {
   private hoverEl = ref<HTMLElement | null>(null);
   private readonly selectingHoverTracker: SelectingHoverTracker
 
-  public baseZIndex: number = 9999;
+  private baseZIndex: number = 9999;
 
   constructor() {
     this.selectingHoverTracker = this.initSelectingHoverTracker();
@@ -54,6 +54,11 @@ class PositionSelector {
     await this.selectingHoverTracker.stop();
     if (this.maskEl) this.maskEl.remove();
     return this;
+  }
+
+  public setBaseZIndex(zIndex: number) {
+    this.baseZIndex = zIndex;
+    return this
   }
 
   public setInsertPosition(newIP: BlockConfig['insertPosition']) {
@@ -129,7 +134,7 @@ class PositionSelector {
       if (this.insertPosition === 'bottom') newHoverEl.after(privewEl);
       if (this.insertPosition === 'top') newHoverEl.before(privewEl);
 
-      this.onHoverChangedHandler(privewEl);
+      this.onHoverChangedHandler(newHoverEl);
     })
 
     return {
