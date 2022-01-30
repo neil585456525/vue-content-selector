@@ -6,12 +6,10 @@ export type BlockConfig = {
 }
 
 export interface StoreProvider {
+  baseZIndex: number;
   blockConfig: BlockConfig;
   isPreviewChoosing: boolean;
   isShowSectionBg: boolean;
   startPositionSelector: (startCb: () => void, successCb: (el: Element) => void) => void;
   cancelPositionSelector: (cancelCb: () => void) => void;
-  emitCanceled: () => void;
-  emitPositionChanged: (el: Element) => void;
-  emitPositionSelected: (el: Element) => void;
 }

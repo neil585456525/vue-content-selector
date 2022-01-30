@@ -1,18 +1,24 @@
 /* eslint-disable no-use-before-define */
+/**
+ * I use a Singleton pattern to avoid the multi-side-effect and increase the performace.
+ * Everytime call the PositionSelector will always using the same instance, so any parameter
+ * changing, need to call the setXXX method. 
+ */
 import { useIntervalFn, useMouse } from '@vueuse/core';
 import { HtmlHTMLAttributes, computed, ref, watch, unref, nextTick } from 'vue';
-import { baseZIndex } from '@/config';
 import { selectedClassName, previewElClassName, addStyleTagToDocument } from './selectStyle';
 import type { BlockConfig } from '@/type'
 
 addStyleTagToDocument();
 
 type OnSelectedHandler = (el: HTMLElement) => void | undefined;
+type OnHoverChangedHandler = (el: HTMLElement) => void | undefined;
 type SelectingHoverTracker = { start: () => void, stop: () => Promise<void> }
 
 class PositionSelector {
 
   private onSelectedHandler: OnSelectedHandler = () => { };
+  private onHoverChangedHandler: OnHoverChangedHandler = () => { };
   private insertPosition: BlockConfig['insertPosition'] = 'bottom'
   /**
    * used to prevent directly interact with element
@@ -24,6 +30,8 @@ class PositionSelector {
    */
   private hoverEl = ref<HTMLElement | null>(null);
   private readonly selectingHoverTracker: SelectingHoverTracker
+
+  public baseZIndex: number = 9999;
 
   constructor() {
     this.selectingHoverTracker = this.initSelectingHoverTracker();
@@ -53,10 +61,16 @@ class PositionSelector {
     return this;
   }
 
-  public setOnSelectedHandler(newOSH: OnSelectedHandler) {
-    this.onSelectedHandler = newOSH;
+  public setOnSelectedHandler(newHandler: OnSelectedHandler) {
+    this.onSelectedHandler = newHandler;
     return this;
   }
+
+  public setOnHoverChangedHandler(newHandler: OnSelectedHandler) {
+    this.onHoverChangedHandler = newHandler;
+    return this;
+  }
+
 
   private addMask(onClickCb: () => void) {
     const style: HtmlHTMLAttributes['style'] = {
@@ -66,7 +80,7 @@ class PositionSelector {
       left: 0,
       top: 0,
       cursor: 'pointer',
-      zIndex: (baseZIndex - 1),
+      zIndex: (this.baseZIndex - 1),
     };
     const maskEl = document.createElement('div');
     Object.assign(maskEl.style, style);
@@ -114,6 +128,8 @@ class PositionSelector {
 
       if (this.insertPosition === 'bottom') newHoverEl.after(privewEl);
       if (this.insertPosition === 'top') newHoverEl.before(privewEl);
+
+      this.onHoverChangedHandler(privewEl);
     })
 
     return {

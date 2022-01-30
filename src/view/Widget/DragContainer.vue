@@ -16,8 +16,12 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from "vue";
-import { baseZIndex } from "@/config";
+import { ref, computed, inject } from "vue";
+import type { StoreProvider } from "@/type";
+
+const storeInject = inject("storeProvider") as StoreProvider;
+
+const baseZIndex = computed(() => storeInject.baseZIndex);
 
 const dragWrapperRef = ref<HTMLElement | null>(null);
 const dragBtn = ref<HTMLElement | null>(null);

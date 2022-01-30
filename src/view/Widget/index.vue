@@ -4,7 +4,7 @@
       <div class="toolEl" :class="{ hide: isWidgetCollapse }">
         <!-- fold btn -->
         <CollapseBtn
-          v-if="!isPreviewChoosing"
+          v-if="!storeInject.isPreviewChoosing"
           @click="isWidgetCollapse = !isWidgetCollapse"
           :active="isWidgetCollapse"
         />
@@ -23,8 +23,8 @@
               @click="openSelectSetting = !openSelectSetting"
             ></CButton>
           </div>
-          <CButton v-if="blockConfig.selector" class="mt-1 btn selector">{{
-            blockConfig.selector
+          <CButton v-if="storeInject.blockConfig.selector" class="mt-1 btn selector">{{
+            storeInject.blockConfig.selector
           }}</CButton>
           <BlockSetting v-show="openSelectSetting" />
           <CButton
@@ -45,8 +45,6 @@
 
 <script lang="ts" setup>
 import { ref, reactive, inject } from "vue";
-import { storeToRefs } from "pinia";
-import { useMainStore } from "@/store";
 import PopMessage from "@/components/PopMessage.vue";
 import DragContainer from "./DragContainer.vue";
 import BlockSetting from "./BlockSetting/index.vue";
@@ -55,9 +53,6 @@ import CollapseBtn from "./CollapseBtn.vue";
 import type { StoreProvider } from "@/type";
 
 const editWidgetRef = ref<HTMLElement | null>(null);
-
-const store = useMainStore();
-const { isPreviewChoosing, blockConfig } = storeToRefs(store);
 
 const popMsg = reactive({
   msg: "",
@@ -69,20 +64,18 @@ const openSelectSetting = ref(false);
 const storeInject = inject("storeProvider") as StoreProvider;
 
 function startChoose() {
-  store.startPositionSelector(
+  storeInject.startPositionSelector(
     () => {
       isWidgetCollapse.value = true;
     },
     (el) => {
-      storeInject.emitPositionSelected(el);
       isWidgetCollapse.value = false;
     }
   );
 }
 
 function cancelChoose() {
-  store.cancelPositionSelector(() => {
-    storeInject.emitCanceled();
+  storeInject.cancelPositionSelector(() => {
     isWidgetCollapse.value = false;
   });
 }

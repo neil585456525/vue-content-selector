@@ -3,8 +3,8 @@
     <img alt="Vue logo" src="./assets/logo.png" />
     <HelloWorld msg="Welcome to Your Vue.js App" />
     <vue-content-selector
-      @onPositionChanged="log('onPositionChanged')"
-      @onPositionSelected="log('onPositionSelected')"
+      @onHoverChanged="(el) => log('onHoverChanged', el)"
+      @onPositionSelected="(el) => log('onPositionSelected', el)"
       @onCanceled="log('onCanceled')"
     />
   </div>
@@ -13,7 +13,7 @@
 <script setup>
 import HelloWorld from "./components/HelloWorld.vue";
 
-const log = (msg) => console.log(msg);
+const log = (...msg) => console.log(msg);
 </script>
 
 <style>

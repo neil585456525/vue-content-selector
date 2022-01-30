@@ -1,7 +1,6 @@
 /* eslint-disable no-use-before-define */
 import { useIntervalFn, useMouse } from '@vueuse/core';
 import { HtmlHTMLAttributes, computed, ref, watch, unref, nextTick } from 'vue';
-import { baseZIndex } from '@/config';
 import { selectedClassName, previewElClassName, addStyleTagToDocument } from './selectStyle';
 import type { BlockConfig } from '@/type'
 
@@ -24,6 +23,8 @@ class PositionSelector {
    */
   private hoverEl = ref<HTMLElement | null>(null);
   private readonly selectingHoverTracker: SelectingHoverTracker
+
+  public baseZIndex: number = 9999;
 
   constructor() {
     this.selectingHoverTracker = this.initSelectingHoverTracker();
@@ -66,7 +67,7 @@ class PositionSelector {
       left: 0,
       top: 0,
       cursor: 'pointer',
-      zIndex: (baseZIndex - 1),
+      zIndex: (this.baseZIndex - 1),
     };
     const maskEl = document.createElement('div');
     Object.assign(maskEl.style, style);

@@ -13,9 +13,8 @@
     "@fortawesome/vue-fontawesome": "^3.0.0-4",
     "@vueuse/core": "^5.0.3",
     "css-selector-generator": "^3.0.1",
-    "pinia": "2.0.4",
-    "vue-shadow-dom": "^2.0.0",
-    "vue": "^3.2.21"
+    "vue": "^3.2.21",
+    "vue-shadow-dom": "^2.0.0"
   },
   "devDependencies": {
     "@types/node": "^16.11.6",
