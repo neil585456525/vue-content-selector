@@ -15,6 +15,23 @@ type OnSelectedHandler = (el: HTMLElement) => void | undefined;
 type OnHoverChangedHandler = (el: HTMLElement) => void | undefined;
 type SelectingHoverTracker = { start: () => void, stop: () => Promise<void> }
 
+export function insertElementByPosition(
+  baseEl: Element,
+  insertPosition: "top" | "bottom" = "top",
+  insertedEl: Element = document.createElement("div"),
+): Element {
+  if (insertPosition === "bottom") {
+    baseEl.after(insertedEl);
+    return insertedEl;
+  }
+  if (insertPosition === 'top') {
+    baseEl.before(insertedEl);
+    return insertedEl;
+  }
+  return insertedEl;
+}
+
+
 class PositionSelector {
 
   private onSelectedHandler: OnSelectedHandler = () => { };
@@ -130,9 +147,7 @@ class PositionSelector {
 
       privewEl = document.createElement('div');
       privewEl.classList.add(previewElClassName);
-
-      if (this.insertPosition === 'bottom') newHoverEl.after(privewEl);
-      if (this.insertPosition === 'top') newHoverEl.before(privewEl);
+      insertElementByPosition(newHoverEl, this.insertPosition, privewEl)
 
       this.onHoverChangedHandler(newHoverEl);
     })
@@ -149,6 +164,4 @@ class PositionSelector {
   }
 }
 
-const positionSelector = new PositionSelector();
-
-export { positionSelector }
+export const positionSelector = new PositionSelector();

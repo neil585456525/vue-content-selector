@@ -16,6 +16,7 @@
 <script lang="ts" setup>
 import { ref, computed, watch, HtmlHTMLAttributes } from "vue";
 import { useMediaQuery } from "@vueuse/core";
+import { insertElementByPosition } from "@/service/PositionSelector";
 import type { BlockConfig } from "@/type";
 
 const props = defineProps<{
@@ -25,31 +26,18 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: "onBeforeContentBuilding"): void;
-  (e: "onContentBuilded", el: HTMLElement): void;
+  (e: "onContentBuilded", el: Element): void;
   (e: "onContentBuildFaild"): void;
 }>();
 
-const contentSectionDom = ref<HTMLElement | null>(null);
+const contentSectionDom = ref<Element | null>(null);
 
 const initSection = () => {
   if (!props.blockConfig.selectedElement) throw new Error("no selectedElement");
 
-  function addContentSection(
-    selectedElement: Element,
-    insertPosition: "top" | "bottom" = "top"
-  ): HTMLElement {
-    const el = document.createElement("div");
-    if (insertPosition === "bottom") {
-      selectedElement.after(el);
-      return el;
-    }
-    selectedElement.before(el);
-    return el;
-  }
-
   try {
     emit("onBeforeContentBuilding");
-    contentSectionDom.value = addContentSection(
+    contentSectionDom.value = insertElementByPosition(
       props.blockConfig.selectedElement,
       props.blockConfig.insertPosition
     );
