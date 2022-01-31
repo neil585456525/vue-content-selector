@@ -13,7 +13,7 @@ const mode = process.env.NODE_ENV === 'development' ? 'development' : 'productio
 const config = {
   mode,
   entry: './src/main.ts',
-  externals: { vue: "vue" },
+  externals: { vue: "Vue" },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].js',

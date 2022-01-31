@@ -1,6 +1,6 @@
 {
   "name": "@neil585456525/vue-content-selector",
-  "version": "0.1.0",
+  "version": "0.1.3",
   "main": "dist/main.js",
   "files": [
     "dist/*"
