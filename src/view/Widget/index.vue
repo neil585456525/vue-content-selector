@@ -23,19 +23,10 @@
               @click="openSelectSetting = !openSelectSetting"
             ></CButton>
           </div>
-          <CButton v-if="storeInject.blockConfig.selector" class="mt-1 btn selector">{{
-            storeInject.blockConfig.selector
+          <CButton class="mt-1 btn selector">{{
+            storeInject?.blockConfig?.selectedElement?.tagName || "none"
           }}</CButton>
           <BlockSetting v-show="openSelectSetting" />
-          <CButton
-            class="save-btn mt-1"
-            @click="saveDataToRepo"
-            alignIcon="end"
-            :loading="isOnSaving"
-            :isDisabled="isOnSaving"
-            secondary
-            >saving</CButton
-          >
         </section>
         <PopMessage :msg="popMsg.msg" :show="popMsg.show" @reset="popMsg.show = false" />
       </div>
@@ -86,12 +77,6 @@ function endSaving() {
   isOnSaving.value = false;
   popMsg.msg = "success";
   popMsg.show = true;
-}
-
-async function saveDataToRepo() {
-  isOnSaving.value = true;
-  // await store.saveEditData();
-  endSaving();
 }
 </script>
 

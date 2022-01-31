@@ -3,7 +3,6 @@
     <img alt="Vue logo" src="./assets/logo.png" />
     <HelloWorld msg="Welcome to Your Vue.js App" />
     <vue-content-selector
-      :contentStyleInShadow="'p {color:red}'"
       @onHoverChanged="(el) => log('onHoverChanged', el)"
       @onPositionSelected="(el) => log('onPositionSelected', el)"
       @onCanceled="log('onCanceled')"

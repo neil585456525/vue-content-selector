@@ -1,16 +1,20 @@
 <template>
-  <shadow-root>
+  <component :is="isWidgetInShadow ? 'shadow-root' : 'section'">
     <section ref="styleDom"></section>
+    <section
+      v-if="widgetStyleInShadow"
+      v-html="`<style type='text/css'>${widgetStyleInShadow}</style>`"
+    ></section>
     <main>
       <Widget />
       <BlockProcessor
         :contentStyle="contentStyleInShadow"
-        :isContentStyleShadow="isContentStyleShadow"
+        :isContentStyleShadow="isContentInShadow"
       >
         <slot> </slot>
       </BlockProcessor>
     </main>
-  </shadow-root>
+  </component>
 </template>
 
 <script lang="ts" setup>
@@ -21,13 +25,17 @@ import type { StoreProvider } from "@/type";
 import { positionSelector } from "@/service/PositionSelector";
 
 interface Props {
-  isContentStyleShadow?: boolean;
+  isWidgetInShadow?: boolean;
+  widgetStyleInShadow?: string;
+  isContentInShadow?: boolean;
   contentStyleInShadow?: string;
   baseZIndex?: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  isContentStyleShadow: false,
+  isWidgetInShadow: true,
+  widgetStyle: "",
+  isContentInShadow: false,
   contentStyle: "",
   baseZIndex: 10000,
 });
