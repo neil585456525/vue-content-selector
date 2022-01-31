@@ -1,6 +1,6 @@
 {
   "name": "@neil585456525/vue-content-selector",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "main": "dist/main.js",
   "files": [
     "dist/*"
@@ -8,6 +8,10 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack --watch",
     "build": "cross-env NODE_ENV=production webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sam585456525/vue-content-selector.git"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
@@ -38,5 +42,14 @@
   },
   "peerDependencies": {
     "vue": "^3.2.21"
-  }
+  },
+  "keywords": [
+    "vue",
+    "vue-content-selecter",
+    "preview-render",
+    "devtool",
+    "chrome",
+    "vue-component",
+    "visualization"
+  ]
 }
