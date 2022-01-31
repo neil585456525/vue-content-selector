@@ -4,6 +4,8 @@ A vue-component that select the html element position and inject content visuall
 
 Inspired by chrome devtool & google-optimize.
 
+[online preview](https://sam585456525.github.io/vue-content-selector/)
+
 ![demo gif](https://i.imgur.com/hh6Vxtb.gif)
 
 # Roadmap
