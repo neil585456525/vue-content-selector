@@ -38,7 +38,7 @@ const config = {
     new CleanWebpackPlugin(),
     new WebpackBar(),
     new VueLoaderPlugin(),
-    ...(mode === 'development' ? [new webpack.HotModuleReplacementPlugin()] : [])
+    ...(mode === 'development' ? [new webpack.HotModuleReplacementPlugin()] : []),
     // new BundleAnalyzerPlugin(),
   ],
   // used in production

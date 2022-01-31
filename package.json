@@ -1,11 +1,13 @@
 {
-  "name": "sdk",
-  "version": "0.0.0",
+  "name": "@neil585456525/vue-content-selector",
+  "version": "0.0.1",
   "main": "dist/main.js",
+  "files": [
+    "dist/*"
+  ],
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack --watch",
-    "build": "cross-env NODE_ENV=production webpack",
-    "watch": "webpack --watch --mode development"
+    "build": "cross-env NODE_ENV=production webpack"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.35",

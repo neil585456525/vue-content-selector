@@ -36,7 +36,7 @@ const props = withDefaults(defineProps<Props>(), {
   isWidgetInShadow: true,
   widgetStyle: "",
   isContentInShadow: false,
-  contentStyle: "",
+  contentStyleInShadow: "",
   baseZIndex: 10000,
 });
 
