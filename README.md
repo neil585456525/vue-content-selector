@@ -134,7 +134,6 @@ In root folder :
 ```
 yarn intall
 yarn dev
-
 ```
 
 Then in `/example` folder
