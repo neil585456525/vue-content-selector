@@ -1,28 +1,42 @@
 # vue-content-selector
 
-A vue-component that select the html element position and inject content visually !
-
-Inspired by chrome devtool & google-optimize.
+A vue-component that select the html element position and inject content visually!
 
 [online preview](https://sam585456525.github.io/vue-content-selector/)
 
 ![demo gif](https://i.imgur.com/hh6Vxtb.gif)
 
-# Roadmap
+# Overview
+
+- [Why ?](#why)
+- [Roadmap](#roadmap)
+- [Installation and Usage](#installation-and-usage)
+- [Api](#api)
+- [Discussion](#discussion)
+- [Development](#development)
+
+
+## Why ?
+If you have created any website add-on like a share-like-button or a advertisement window, that will be inserted into user's website. This tool can help your users to select and feel a good position for your content!
+
+## Roadmap
 
 - [x] Basic componet usage
 - [x] Modify position appearance
 - [ ] Add unit-testing
 - [ ] Add e2e-testing
 - [ ] List and select parent element
+- [ ] Mobile preview mode
 
-# Install
+## Installation and Usage
+
+### Installation
 
 ```
 npm install @neil585456525/vue-content-selector
 ```
 
-# Usage
+### Usage
 
 ```js
 import { createApp } from "vue";
@@ -43,19 +57,9 @@ createApp(App).use(VueContentSelector).mount("#app");
 </template>
 ```
 
-# Api
+## Api
 
-```ts
-interface Props {
-  isWidgetInShadow?: boolean;
-  widgetStyleInShadow?: string;
-  isContentInShadow?: boolean;
-  contentStyleInShadow?: string;
-  baseZIndex?: number;
-}
-```
-
-## Props
+### Props
 
 - `isWidgetInShadow`
 
@@ -89,7 +93,27 @@ interface Props {
 
   Set the widget base-z-index, it also affect positionSelecter logic.
 
-# Discussion
+### Emits
+
+- `onHoverChanged()`
+
+  - parameters: hovered element
+  - type: Element
+
+  Triggers when select hovered element changes
+
+- `onPositionSelected()`
+
+  - parameters: hovered element
+  - type: Element
+
+  Triggers when select sucessed
+
+- `onCanceled()`
+
+  Triggers when click cancel button
+
+## Discussion
 
 This project is trying to build a library to select the html element position and inject content visually in any website!
 To achieve this there are a number of primary problems should be solved as bellow.
@@ -103,7 +127,7 @@ To achieve this there are a number of primary problems should be solved as bello
 
 - Oringinal I used dynamic event binding when any elememnt that cursor hovered, but it can't prevent the original element hover and click behavior, and will cause some performence problem, so I come out another solution. Using an invisible mask and using elementFromPoint API to reach this effect, this can solve both problems.
 
-# Development
+## Development
 
 In root folder :
 
